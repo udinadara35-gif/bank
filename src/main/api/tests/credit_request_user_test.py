@@ -11,7 +11,7 @@ class TestCreditUser:
     def test_credit_user_valid(self, db_session: Session , api_manager: ApiManager, credit_bank_account):
         response = api_manager.credit_steps.credit_request(credit_bank_account)
 
-        assert response.id == credit_bank_account.id
+        assert response.id == credit_bank_account.id, 'ID кредитного аакаунта в ответе API при оформлении кредита не совпадает'
 
         credit_from_db = Credit.get_credit_by_account_id(db_session, credit_bank_account.id)
         assert credit_from_db is not None, 'Созданного кредита нет в БД, ошибка'

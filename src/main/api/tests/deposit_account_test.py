@@ -9,8 +9,8 @@ class TestDepositAccount:
     def test_deposit_account_valid(self, db_session: Session, api_manager: ApiManager, active_account_bank):
         response = api_manager.user_steps.deposit_account(active_account_bank)
 
-        assert response.id == active_account_bank.accountId
-        assert response.balance == active_account_bank.amount
+        assert response.id == active_account_bank.accountId, 'ID счета в ответе API не совпадает'
+        assert response.balance == active_account_bank.amount, 'Баланс на аккаунте в ответе API не совпадет с суммой депозита'
 
         transaction_from_db = Transaction.get_transaction_by_to_account_and_type(db_session, active_account_bank.accountId, "deposit")
         assert transaction_from_db is not None, 'Транзакции депозита нет в БД'

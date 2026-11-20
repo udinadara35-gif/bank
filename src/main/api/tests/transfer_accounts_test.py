@@ -10,7 +10,7 @@ class TestTransferAccounts:
     def test_transfer_accounts_valid(self, db_session: Session,api_manager: ApiManager, transfer_account_bank):
         response = api_manager.user_steps.transfer_accounts(transfer_account_bank)
 
-        assert response.toAccountId == transfer_account_bank.toAccountId
+        assert response.toAccountId == transfer_account_bank.toAccountId, 'ID аккаунта получателя не совпадает в ответе API '
 
         sender = Transaction.get_transaction_by_from_account_and_type(db_session, transfer_account_bank.fromAccountId,
                                                                       "transfer")

@@ -10,7 +10,7 @@ class TestRepayCreditUser:
     def test_repay_credit_user_valid(self, db_session: Session ,api_manager: ApiManager, active_credit):
         response = api_manager.credit_steps.repay_credit(active_credit)
 
-        assert response.creditId == active_credit.creditId
+        assert response.creditId == active_credit.creditId, 'ID кредита в ответе API при погашении не совпадает'
 
         credit_from_db = Credit.get_credit_by_id(db_session, active_credit.creditId)
         assert credit_from_db is not None, 'Кредит не найден в БД'
@@ -19,7 +19,7 @@ class TestRepayCreditUser:
         transaction_from_db = Transaction.get_transaction_by_credit_id(db_session, active_credit.creditId)
         assert transaction_from_db is not None, 'Транзакции погашения кредита нет в БД'
         assert transaction_from_db.credit_id == active_credit.creditId, 'ID  кредита нет в БД'
-        assert transaction_from_db.amount == active_credit.amount
+        assert transaction_from_db.amount == active_credit.amount, 'Сумма погашения в транзакции БД не совпадает'
 
 
 
